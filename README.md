@@ -58,3 +58,43 @@
   ... QueryClient ~ setting
   ... useQuery()
   ... fetch() ~ promise chaining
+
+---
+
+5. Slider Part
+
+- AnimatePresence
+
+  ... initial
+
+  ... onExitComplete
+
+- Calculation
+
+  ... slice()
+
+  ... map()
+
+  ... Math.floor(), Math.ceil()
+
+  ... Optional Chaining
+
+- EventListener
+
+  ... addEventListener()
+
+  ... removeEventListener()
+
+---
+
+6. Box Animation Part
+
+- variants
+
+  ... scale
+
+  ... y
+
+  ... type: tween
+
+---

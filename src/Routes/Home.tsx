@@ -61,10 +61,61 @@ const Box = styled(motion.div)<{ photo: string }>`
   background-size: cover;
   background-position: center center;
   font-size: 66px;
+
+  &:first-child {
+    transform-origin: center left;
+  }
+
+  &:last-child {
+    transform-origin: center right;
+  }
 `;
 
+const Info = styled(motion.div)`
+  padding: 10px;
+  background-color: ${(props) => props.theme.black.lighter};
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+
+  h4 {
+    text-align: center;
+    font-size: 18px;
+  }
+`;
+
+// variants
+
+const boxVariants = {
+  normal: {
+    scale: 1,
+  },
+  // Row의 movie에 마우스를 올렸을 경우 나오는 효과
+  hover: {
+    scale: 1.3, // 크기 커짐
+    y: -80, // 위로 상승
+    transition: {
+      delay: 0.5, // 0.5초 이후에 진행
+      duration: 0.3, // 0.3초 동안 진행
+      type: "tween", // tween type
+    },
+  },
+};
+
+const infoVariants = {
+  hover: {
+    opacity: 1, // 안 보이다가 마우스 올리면 보임
+    // box 와 동일한 hover 효과
+    transition: {
+      delay: 0.5,
+      duration: 0.3,
+      type: "tween",
+    },
+  },
+};
 // variables
-const offset = 6;
+const offset = 6; // Row당 movie 의 개수
 
 // Component
 export default function Home() {
@@ -123,7 +174,7 @@ export default function Home() {
             {/* onExitComplete: 애니메이션 끝난 뒤에 실행 x */}
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row
-                // gap을 고려하여 시작과 끝의 Row 위치 선정
+                // gap을 고려하여 시작과 끝의 Row 위치 선정 ~ 애니메이션
                 initial={{ x: width + 5 }}
                 animate={{ x: 0 }}
                 exit={{ x: -width - 5 }}
@@ -137,9 +188,18 @@ export default function Home() {
                   .map((movie) => (
                     <Box
                       key={movie.id}
+                      whileHover='hover'
+                      initial='normal'
+                      variants={boxVariants} // variants 연결
+                      transition={{ type: "tween" }} // transition 타입 지정
                       // 이미지 생성 함수에 format 을 추가
                       photo={makeImagePath(movie.backdrop_path, "w500")}
-                    />
+                    >
+                      {/* variants 연결. box의 variant 효과 상속*/}
+                      <Info variants={infoVariants}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
                   ))}
               </Row>
             </AnimatePresence>
