@@ -5,6 +5,7 @@ function Root() {
   return (
     <>
       <Header />
+      {/* -> Home.tsx / Search.tsx / Tv.tsx */}
       <Outlet />
     </>
   );

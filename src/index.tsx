@@ -77,6 +77,7 @@ root.render(
     <RecoilRoot>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
+        {/* -> Root.tsx */}
         <Router />
       </ThemeProvider>
     </RecoilRoot>
