@@ -64,7 +64,7 @@ body {
   color:${(props) => props.theme.white.darker};
   background-color: black;
   line-height: 1.2;
-  
+  overflow-x:hidden // 이미지 슬라이드 시 스크롤바 삭제
 }
 a {
   text-decoration:none;
