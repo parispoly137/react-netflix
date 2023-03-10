@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider } from "styled-components";
 import { createGlobalStyle } from "styled-components";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { theme } from "./theme";
 import Router from "./Router";
 
@@ -60,7 +61,8 @@ table {
 body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
-  color:black;
+  color:${(props) => props.theme.white.darker};
+  background-color: black;
   line-height: 1.2;
   
 }
@@ -69,17 +71,22 @@ a {
   color:inherit;
 }
 `;
+
+const queryClient = new QueryClient();
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <RecoilRoot>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        {/* -> Root.tsx */}
-        <Router />
-      </ThemeProvider>
-    </RecoilRoot>
+    <QueryClientProvider client={queryClient}>
+      <RecoilRoot>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          {/* -> Root.tsx */}
+          <Router />
+        </ThemeProvider>
+      </RecoilRoot>
+    </QueryClientProvider>
   </React.StrictMode>
 );
