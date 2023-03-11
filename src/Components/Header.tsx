@@ -5,9 +5,10 @@ import {
   useMotionValueEvent,
   useScroll,
 } from "framer-motion";
-import { useMatch } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 // Styled-components
 const Nav = styled(motion.nav)`
@@ -68,7 +69,7 @@ const Circle = styled(motion.div)`
   background-color: ${(props) => props.theme.red};
 `;
 
-const Search = styled.span`
+const Search = styled.form`
   color: white;
   display: flex;
   align-items: center;
@@ -127,6 +128,13 @@ const navVariants = {
   },
 };
 
+// interface
+
+// useForm을 위한 타입 선언
+interface IForm {
+  keyword: string;
+}
+
 export default function Header() {
   // useMatch를 이용하여 현재 url 체크 ~ menu circle과 연결
   const homeMatch = useMatch("/");
@@ -141,6 +149,15 @@ export default function Header() {
 
   // 스크롤 관련 정보 hooks
   const { scrollY } = useScroll();
+
+  // useNavigate hooks
+  const navigate = useNavigate();
+
+  // useForm hooks
+  const { register, handleSubmit } = useForm<IForm>();
+
+  // submit이 유효한 경우, url 이동
+  const onValid = (data: IForm) => navigate(`/search?keyword=${data.keyword}`);
 
   // 검색 아이콘 클릭에 직접 애니메이션 지정
   const toggleSearch = () => {
@@ -202,7 +219,8 @@ export default function Header() {
         </Items>
       </Col>
       <Col>
-        <Search>
+        {/* useForm의 handleSubmit 연결 */}
+        <Search onSubmit={handleSubmit(onValid)}>
           <motion.svg
             // 아이콘을 클릭하면 searchOpen state 변경
             onClick={toggleSearch}
@@ -219,6 +237,8 @@ export default function Header() {
             ></path>
           </motion.svg>
           <Input
+            // useForm의 register 연결
+            {...register("keyword", { required: true, minLength: 2 })}
             animate={inputAnimation} // 애니메이션 적용
             initial={{ scaleX: 0 }} // 초기 상태
             transition={{ type: "linear" }}
